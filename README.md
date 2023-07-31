@@ -7,5 +7,5 @@ Audiovisual-Books is an innovative application designed to convert text into an 
 ## Run
 
 ```
-streamlit run main.py
+streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false
 ```

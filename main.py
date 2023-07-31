@@ -1,16 +1,21 @@
 import streamlit as st
 from _speechElevenLabs import generate_speech
+from _langchain import get_all_prompts
 
 col1, col2 = st.columns(2)
 
-def submit(input_text, voice_actor):
-    generated_speech = generate_speech(input_text, voice_actor)
-    return generated_speech
+def submit(paragraphs, style, voice_actor):
+    generated_img_prompts = get_all_prompts(paragraphs, style)
+    generated_speech = generate_speech(paragraphs, voice_actor)
+    return [generated_img_prompts, generated_speech]
 
 with col1: 
     st.header("Text")
     with st.form("Text input", clear_on_submit=False):
-        input_text = st.text_area("Enter your text here")
+        paragraphs = st.text_area("Enter your text here")
+        style = st.selectbox(
+            'Art style',
+            ('Dreamy','Water Color'))
         voice_actor = st.selectbox(
             'Voice actors',
             ('Adam','Bella'))
@@ -19,10 +24,13 @@ with col1:
 with col2: 
     st.header("Audiobook")
     if submit_button:
-        audio = submit(input_text, voice_actor)
+        generation = submit(paragraphs, style, voice_actor)
+        image_prompts = generation[0]
+        audio = generation[1]
     if submit_button:
+        st.info(image_prompts)
         st.audio(audio)
     # if submit_button:
-    #     video = submit(input_text)
+    #     video = submit(paragraphs)
     # if submit_button:
-    #     st.video(video)pip
+    #     st.video(video)
