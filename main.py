@@ -1,5 +1,5 @@
 import streamlit as st
-from speechElevenLabs import generate_speech
+from _speechElevenLabs import generate_speech
 
 col1, col2 = st.columns(2)
 
