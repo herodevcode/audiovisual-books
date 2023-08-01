@@ -3,16 +3,11 @@ import openai
 
 # from dotenv import load_dotenv
 # load_dotenv()
-# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-def paragraphs_from_text(txt):
-    output = txt.splitlines()
-    return output
+# openai.api_key  = os.getenv("OPENAI_API_KEY")
 
 # method to generate prompt for stable diffusion
-def image_gen_prompt(paragraph, style):
+def image_gen_prompt(paragraph, style, api_key):
+    openai.api_key = api_key
     result = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
         messages = [
@@ -36,10 +31,11 @@ def image_gen_prompt(paragraph, style):
     message = result['choices'][0]['message']['content']
     return message
 
-def get_all_prompts(paragraphs, style):
+def get_all_prompts(texts, style, api_key):
     prompts = []
-    for paragraph in paragraphs:
-        prompt = image_gen_prompt(paragraph, style)
-        prompts.append(prompt)
+    for idx, paragraph in enumerate(texts):
+        prompt = image_gen_prompt(paragraph, style, api_key)
+        prompts.append((idx, prompt))
+        if idx >= 2:  # stop after generating 3 prompts
+            break
     return prompts
-
