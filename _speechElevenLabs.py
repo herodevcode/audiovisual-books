@@ -1,8 +1,8 @@
 import os
 import datetime
-from dotenv import load_dotenv
 from elevenlabs import generate, set_api_key, save
 
+# from dotenv import load_dotenv
 # load_dotenv()
 # XI_API_KEY = os.getenv("XI_API_KEY")
 # # Set API key for ElevenLabs
